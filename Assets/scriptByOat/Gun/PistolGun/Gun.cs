@@ -25,7 +25,9 @@ public class Gun : MonoBehaviour, IThrow
         {
             case "AssaltRifle":
                 Debug.Log(guntype);
-
+                mode1 = new ASR_mode1();
+                mode2 = new ASR_mode2();
+                currentMode = mode1;
                 break;
             case "Pistol":
                 Debug.Log(guntype);
@@ -34,6 +36,9 @@ public class Gun : MonoBehaviour, IThrow
                 currentMode = mode1;    
                 break;
             case "ShotGun":
+                mode1 = new ShortGunMode1();
+                mode2 = new ShortGUnmode2();
+                currentMode = mode1;
                 Debug.Log(guntype);
                 break;
 
@@ -78,6 +83,7 @@ public class Gun : MonoBehaviour, IThrow
     public void SwitchMode()
     {
         currentMode = (currentMode == mode1) ? mode2 : mode1;
+        OnAmmoChanged?.Invoke();
     }
     public void ReloadFuc()
     {
@@ -97,5 +103,18 @@ public class Gun : MonoBehaviour, IThrow
         gameObject.layer = 1;
         yield return new WaitForSeconds(2f);
         Destroy(gameObject);
+    }
+    public void Addammo(int amount)
+    {
+        AllAmmoleft += amount;
+      
+    }
+    public AmmoTypeSO GetAmmoType()
+    {
+        if (guntype != null)
+        {
+            return guntype.AmmoType;
+        }
+        return null;
     }
 }

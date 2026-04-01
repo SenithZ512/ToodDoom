@@ -13,6 +13,7 @@ public class EquimentSlot : MonoBehaviour,IThrow
     [SerializeField] private float ThrowForce = 5f;
     [SerializeField] private UpdateAmmoUI ammoUI;
     private int currentindex;
+    private int previousIndex;
     public void AddGun(GameObject newGun)
     {
         if (gunList.Count < 10) 
@@ -35,7 +36,12 @@ public class EquimentSlot : MonoBehaviour,IThrow
             
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))
             {
+                if (currentindex != i)
+                {
+                    previousIndex = currentindex;
+                }
                 OnHoldGun(i);
+                
                 if (CurrentHolding != null) UpdateUI(CurrentHolding.GetComponent<Gun>());
                 break; 
             }
@@ -52,6 +58,7 @@ public class EquimentSlot : MonoBehaviour,IThrow
             {
                 if (currentGun.AllAmmoleft <= 0 && currentGun.currentAmmo <= 0)
                 {
+                    currentGun.OnAmmoChanged?.Invoke();
                     SwitchToNextAvailableGun();
                     return;
                 }
@@ -62,6 +69,10 @@ public class EquimentSlot : MonoBehaviour,IThrow
             {
                 currentGun.GetComponent<Gun>().ReloadFuc();
                 
+            }
+            if (Input.GetButtonDown("Swamp"))
+            {
+                SwapToPreviousGun();
             }
         }
        
@@ -79,6 +90,20 @@ public class EquimentSlot : MonoBehaviour,IThrow
             
             _gun.GetComponent<Rigidbody>().isKinematic = true;
             AddGun(_gun.gameObject);
+        }
+    }
+    public void SwapToPreviousGun()
+    {
+      
+        if (gunList.Count > 1 && previousIndex < gunList.Count)
+        {
+            int tempIndex = currentindex; 
+
+            OnHoldGun(previousIndex);
+
+            previousIndex = tempIndex; 
+
+            if (CurrentHolding != null) UpdateUI(CurrentHolding.GetComponent<Gun>());
         }
     }
     private void OnHoldGun(int index)
@@ -157,7 +182,7 @@ public class EquimentSlot : MonoBehaviour,IThrow
     {
         if (ammoUI != null)
         {
-            ammoUI.UpdateText(gun.currentAmmo, gun.AllAmmoleft);
+            ammoUI.UpdateText(gun.currentAmmo, gun.AllAmmoleft,gun.currentMode.ModeName);
         }
     }
 }

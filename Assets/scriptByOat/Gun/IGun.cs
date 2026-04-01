@@ -4,5 +4,7 @@ using UnityEngine;
 
 public interface IGun 
 {
+    string ModeName { get; }
     void shoot(Transform gunpoint);
+  
 }
