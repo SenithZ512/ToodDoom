@@ -34,7 +34,7 @@ public class PlayerCamera : MonoBehaviour
 
     // ── Components ──────────────────────────────────────────────
     private PlayerController _playerController;
-    private GrapplingHook _grapplingHook;
+    private Grappling _grapplingHook;            // ← แก้จาก GrapplingHook เป็น Grappling
 
     // ── State ───────────────────────────────────────────────────
     private float _targetPitch;      // X rotation (บน/ล่าง)
@@ -48,17 +48,15 @@ public class PlayerCamera : MonoBehaviour
     // ────────────────────────────────────────────────────────────
     void Awake()
     {
-        // ล็อค cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         _defaultLocalPos = transform.localPosition;
 
-        // หา component จาก parent
         if (playerBody != null)
         {
             _playerController = playerBody.GetComponent<PlayerController>();
-            _grapplingHook = playerBody.GetComponent<GrapplingHook>();
+            _grapplingHook = playerBody.GetComponentInChildren<Grappling>();
         }
     }
 
@@ -102,13 +100,11 @@ public class PlayerCamera : MonoBehaviour
         {
             if (_playerController.IsSliding)
                 targetTilt = slideTilt;
-            else if (_grapplingHook != null && _grapplingHook.IsGrappling)
+            else if (_grapplingHook != null && _grapplingHook.IsGrappling()) // ← แก้ตรงนี้
                 targetTilt = grappleTilt;
         }
 
         _currentTilt = Mathf.Lerp(_currentTilt, targetTilt, tiltSpeed * Time.deltaTime);
-
-        // Apply rotation: Pitch (X) + Tilt (Z)
         transform.localRotation = Quaternion.Euler(_currentPitch, 0f, -_currentTilt);
     }
     #endregion
