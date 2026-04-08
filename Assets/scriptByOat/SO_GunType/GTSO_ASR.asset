@@ -18,3 +18,4 @@ MonoBehaviour:
   FireRate: 0.05
   MaxCapacity: 40
   MaxAmmoCanTake: 600
+  ReloadTime: 1

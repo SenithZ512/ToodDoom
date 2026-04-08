@@ -20,6 +20,7 @@ public class EquimentSlot : MonoBehaviour,IThrow
         {
             gunList.Add(newGun);
             Gun gunScript = newGun.GetComponent<Gun>();
+         
             gunScript.OnAmmoChanged = () => {
                 UpdateUI(gunScript);
             };
@@ -58,7 +59,9 @@ public class EquimentSlot : MonoBehaviour,IThrow
             {
                 if (currentGun.AllAmmoleft <= 0 && currentGun.currentAmmo <= 0)
                 {
+                    currentGun.currentAmmo = 0;
                     currentGun.OnAmmoChanged?.Invoke();
+                  
                     SwitchToNextAvailableGun();
                     return;
                 }

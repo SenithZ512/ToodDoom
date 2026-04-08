@@ -9,11 +9,9 @@ public class PistolSeconMode : MonoBehaviour,IGun
     public string ModeName => _modename;
 
    
-
-    public void shoot(Transform gunpoint)
+    public void shoot(Transform gunpoint, GunTypeSo Gundata)
     {
-        Debug.Log("pistol Secondmode");
+        Gundata.FireRate = 0.07f;
+        Objectpool.Instance.SpawnFromPool("PistolBullet", gunpoint.position, gunpoint.rotation);
     }
-
-    
 }

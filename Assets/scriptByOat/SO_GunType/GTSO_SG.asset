@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GunTypename: ShotGun
   AmmoType: {fileID: 11400000, guid: 6dcb3d001ba077b459b10ccd321a1c40, type: 2}
-  Damage: 3
-  FireRate: 0.4
+  Damage: 2
+  FireRate: 0.5
   MaxCapacity: 8
   MaxAmmoCanTake: 60
+  ReloadTime: 1

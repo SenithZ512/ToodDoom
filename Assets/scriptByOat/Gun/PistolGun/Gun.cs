@@ -5,7 +5,7 @@ using System;
 [RequireComponent(typeof(Rigidbody))]
 public class Gun : MonoBehaviour, IThrow
 {
-    [SerializeField]private GunTypeSo guntype;
+    public GunTypeSo guntype;
     private IGun mode1;
     private IGun mode2;
     public IGun currentMode;
@@ -15,6 +15,9 @@ public class Gun : MonoBehaviour, IThrow
     public int currentAmmo;
     public int AllAmmoleft;
     public Action OnAmmoChanged;
+   
+
+    private bool Isreload;
     private void Start()
     {
         Type = guntype.GunTypename;
@@ -25,23 +28,33 @@ public class Gun : MonoBehaviour, IThrow
         {
             case "AssaltRifle":
                 Debug.Log(guntype);
+
                 mode1 = new ASR_mode1();
                 mode2 = new ASR_mode2();
                 currentMode = mode1;
                 break;
             case "Pistol":
                 Debug.Log(guntype);
-                mode1 = new PistolFistMode();
-                mode2 = new PistolSeconMode();
+
+                mode1 = GetComponent<PistolFistMode>();
+                mode2 = GetComponent<PistolSeconMode>();
+               
                 currentMode = mode1;    
                 break;
             case "ShotGun":
-                mode1 = new ShortGunMode1();
-                mode2 = new ShortGUnmode2();
+                mode1 = GetComponent<ShortGunMode1>();
+                mode2 = GetComponent<ShortGUnmode2>();
                 currentMode = mode1;
                 Debug.Log(guntype);
                 break;
-
+            case "CrossBow":
+                mode1 = GetComponent<CrossBowMode1>();
+                currentMode = mode1;
+                break;
+            case "RocketLauncher":
+                mode1 = GetComponent<RockeLaunderMode>();
+                currentMode = mode1;
+                break;
         }
     }
    
@@ -58,6 +71,7 @@ public class Gun : MonoBehaviour, IThrow
     }
     public void ExecuteFire()
     {
+        if (Isreload) return;
         if (Time.time < FirerateCount) return;
       
         if (currentAmmo <= 0)
@@ -65,11 +79,10 @@ public class Gun : MonoBehaviour, IThrow
             ReloadFuc();
             return;
         }
-       
-        currentMode.shoot(GunPoint);
+        currentMode.shoot(GunPoint,guntype);
         FirerateCount = Time.time + guntype.FireRate;
         currentAmmo--;
-        if (currentAmmo <= 0 && AllAmmoleft > 0)
+        if (currentAmmo < 0 && AllAmmoleft > 0)
         {
             ReloadFuc();
         }
@@ -82,17 +95,29 @@ public class Gun : MonoBehaviour, IThrow
     }
     public void SwitchMode()
     {
+        if (mode2 == null) return;
         currentMode = (currentMode == mode1) ? mode2 : mode1;
         OnAmmoChanged?.Invoke();
+        
     }
     public void ReloadFuc()
     {
+        if (Isreload || currentAmmo == guntype.MaxCapacity || AllAmmoleft <= 0) return;
+        StartCoroutine(Reloading());
+        
+    }
+   private IEnumerator Reloading()
+    {
+        Isreload=true;
+        yield return new WaitForSeconds(guntype.ReloadTime);
         int ammoNeeded = guntype.MaxCapacity - currentAmmo;
         int ammoToReload = Mathf.Min(ammoNeeded, AllAmmoleft);
         currentAmmo += ammoToReload;
         AllAmmoleft -= ammoToReload;
+        
         OnAmmoChanged?.Invoke();
         Debug.Log("reload" + AllAmmoleft);
+        Isreload = false;   
     }
     private IEnumerator Throwed()
     {

@@ -11,4 +11,5 @@ public class GunTypeSo : ScriptableObject
     public float FireRate;
     public int MaxCapacity;
     public int MaxAmmoCanTake;
+    public float ReloadTime = 2f;
 }

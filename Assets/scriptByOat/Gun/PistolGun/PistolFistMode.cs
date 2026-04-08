@@ -8,10 +8,9 @@ public class PistolFistMode : MonoBehaviour, IGun
 
     public string ModeName => _modename;
 
-    
-
-    public void shoot(Transform gunpoint)
+    public void shoot(Transform gunpoint, GunTypeSo Gundata)
     {
-        Debug.Log("Pistolmode1");
+        Gundata.FireRate = 0.6f;
+        Objectpool.Instance.SpawnFromPool("PistolBullet", gunpoint.position, gunpoint.rotation);
     }
 }
