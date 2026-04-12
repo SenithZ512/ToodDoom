@@ -9,7 +9,7 @@ public class UpdtaeHelthplayer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI ArmourUi;
     private float health;
     private float armour;
-    private HeldStatus held;
+    [SerializeField]private HeldStatus held;
    
     private void OnEnable()
     {
@@ -22,7 +22,7 @@ public class UpdtaeHelthplayer : MonoBehaviour
     }
     private void GUIUPDATE()
     {
-        held = GetComponent<HeldStatus>();
+       
         health = held._health;
         armour = held._armor;
         HealthUi.text = "Health:"+health.ToString();

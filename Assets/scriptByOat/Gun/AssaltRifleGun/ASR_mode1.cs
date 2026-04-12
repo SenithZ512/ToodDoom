@@ -10,10 +10,10 @@ public class ASR_mode1 : MonoBehaviour, IGun
 
    
 
-   
-
-    public void shoot(Transform gunpoint, GunTypeSo Gundata)
+  
+    public void shoot(Transform gunpoint, GunTypeSo Gundata, float finalDamage, bool isCrit)
     {
+
         Debug.Log("ASR_mod1");
     }
 }

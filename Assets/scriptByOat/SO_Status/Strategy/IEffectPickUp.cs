@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IDamgaeAble 
+public interface IEffectPickUp 
 {
-    void OnDamaged(float damageAmount);
+    void Onpickup(EquimentSlot equid);
 }

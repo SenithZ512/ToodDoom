@@ -9,8 +9,8 @@ public class ASR_mode2 : MonoBehaviour, IGun
     public string ModeName => _modename;
 
    
-   
-    public void shoot(Transform gunpoint, GunTypeSo Gundata)
+
+    public void shoot(Transform gunpoint, GunTypeSo Gundata, float finalDamage, bool isCrit)
     {
         Debug.Log("ASR_mod2");
     }

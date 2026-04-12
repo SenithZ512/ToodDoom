@@ -12,13 +12,17 @@ public class Explosion : MonoBehaviour
   
     public void Explode()
     {
-
-        Debug.Log("booom");
+       
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
 
         foreach (Collider hit in colliders)
         {
-           
+            if (hit.gameObject == gameObject)
+            {
+                hit.enabled = false;
+               
+            }
+
             if (hit.TryGetComponent<IElement>(out IElement element))
             {
              
@@ -26,15 +30,14 @@ public class Explosion : MonoBehaviour
                 element.Accept(dmgVisitor);
             }
 
-          
             Rigidbody rb = hit.GetComponent<Rigidbody>();
             if (rb != null)
             {
+               if(rb.gameObject == gameObject) rb.isKinematic = true;
                 rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
             }
         }
 
-        Destroy(gameObject);
     }
 
     private void OnDrawGizmosSelected()
@@ -45,6 +48,8 @@ public class Explosion : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         StartCoroutine(Dissapear());
+        
+
     }
     
     private IEnumerator Dissapear()

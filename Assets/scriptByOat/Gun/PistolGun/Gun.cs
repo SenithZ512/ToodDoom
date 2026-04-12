@@ -14,7 +14,7 @@ public class Gun : MonoBehaviour, IThrow
     [SerializeField] private Transform GunPoint;
     public int currentAmmo;
     public int AllAmmoleft;
-    public Action OnAmmoChanged;
+   
    
 
     private bool Isreload;
@@ -23,19 +23,18 @@ public class Gun : MonoBehaviour, IThrow
         Type = guntype.GunTypename;
         currentAmmo = guntype.MaxCapacity;
         AllAmmoleft = guntype.MaxAmmoCanTake;
-        Debug.Log("Currentammo"+currentAmmo+ "MAx"+ AllAmmoleft);
+       
         switch (Type)
         {
             case "AssaltRifle":
-                Debug.Log(guntype);
+                
 
                 mode1 = new ASR_mode1();
                 mode2 = new ASR_mode2();
                 currentMode = mode1;
                 break;
             case "Pistol":
-                Debug.Log(guntype);
-
+            
                 mode1 = GetComponent<PistolFistMode>();
                 mode2 = GetComponent<PistolSeconMode>();
                
@@ -45,7 +44,7 @@ public class Gun : MonoBehaviour, IThrow
                 mode1 = GetComponent<ShortGunMode1>();
                 mode2 = GetComponent<ShortGUnmode2>();
                 currentMode = mode1;
-                Debug.Log(guntype);
+             
                 break;
             case "CrossBow":
                 mode1 = GetComponent<CrossBowMode1>();
@@ -63,42 +62,41 @@ public class Gun : MonoBehaviour, IThrow
         StartCoroutine(Throwed());
     }
     
-    public void SetupGun(IGun m1, IGun m2)
-    {
-        mode1 = m1;
-        mode2 = m2;
-        currentMode = mode1; 
-    }
+  
     public void ExecuteFire()
     {
         if (Isreload) return;
         if (Time.time < FirerateCount) return;
-      
         if (currentAmmo <= 0)
         {
-            ReloadFuc();
+            
+            if (AllAmmoleft > 0)
+            {
+                ReloadFuc();
+            }
             return;
         }
-        currentMode.shoot(GunPoint,guntype);
+        float damageToSend = guntype.Damage;
+        bool critState = false; EquimentSlot owner = GetComponentInParent<EquimentSlot>();
+        if (owner != null && owner.isCritHundredActive)
+        {
+            critState = true;
+           
+            damageToSend = guntype.Damage * 3f;
+        }
+        currentMode.shoot(GunPoint, guntype, damageToSend, critState);
         FirerateCount = Time.time + guntype.FireRate;
         currentAmmo--;
-        if (currentAmmo < 0 && AllAmmoleft > 0)
-        {
-            ReloadFuc();
-        }
-        else
-        {
-            
-            OnAmmoChanged?.Invoke();
-        }
-        Debug.Log("Shoot " +currentAmmo+ "Type "+ guntype);
+       
+
+       
     }
     public void SwitchMode()
     {
         if (mode2 == null) return;
         currentMode = (currentMode == mode1) ? mode2 : mode1;
-        OnAmmoChanged?.Invoke();
-        
+        GameEvent.UpdateAmmo?.Invoke();
+
     }
     public void ReloadFuc()
     {
@@ -115,8 +113,7 @@ public class Gun : MonoBehaviour, IThrow
         currentAmmo += ammoToReload;
         AllAmmoleft -= ammoToReload;
         
-        OnAmmoChanged?.Invoke();
-        Debug.Log("reload" + AllAmmoleft);
+      
         Isreload = false;   
     }
     private IEnumerator Throwed()

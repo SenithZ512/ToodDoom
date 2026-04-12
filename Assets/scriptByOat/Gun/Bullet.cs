@@ -8,43 +8,47 @@ public class Bullet : MonoBehaviour, IpoolObject
     [SerializeField] private GunTypeSo gunTypeSo;
     [SerializeField] private float speed;
     private string Explode = "Explode";
-    [SerializeField] private float damage =>gunTypeSo.Damage;
+    [SerializeField] private float damage;
     [SerializeField] private Transform Firepoint;
     private Rigidbody rb;
 
 
-    private void OnEnable()
+    private bool _isCrit; public void Setup(float dmg, bool crit)
     {
-        rb = GetComponent<Rigidbody>();
-        
+        damage = dmg;
+        _isCrit = crit;
     }
-    
-    public void SetFirepoint(Transform point)
-    {
-        Firepoint=point;
-    }
+
+   
+   
     private void OnCollisionEnter(Collision collision)
     {
         if (gunTypeSo.GunTypename == "RocketLauncher")
         {
             Objectpool.Instance.SpawnFromPool(Explode, transform.position, transform.rotation);
             gameObject.SetActive(false);
+            return;
         }
-        if (collision.gameObject.TryGetComponent<IElement> (out IElement _damage))
+      /*  float finalDamage = damage;
+        if (gameObject.CompareTag("Bullet") && Critmanager.PlayerCritActive)
+        {
+            finalDamage = damage +damage * 2f; 
+        }*/
+
+        if (collision.gameObject.TryGetComponent<IElement>(out IElement _damage))
         {
             //Objectpool.Instance.SpawnFromPool("Blood", transform.position, transform.rotation);
-            DamageVisitor DmgVistit = new DamageVisitor (damage);
+            DamageVisitor DmgVistit = new DamageVisitor(damage);
             _damage.Accept(DmgVistit);
             gameObject.SetActive(false);
+            if (_isCrit) Debug.Log("BOOM! CRITICAL HIT!");
         }
-        
-        else
-        {
-            gameObject.SetActive(false);
-        }
+        gameObject.SetActive(false);
     }
     public void OnobjectSpawn()
     {
+        if (rb == null) rb = GetComponent<Rigidbody>();
         rb.velocity = transform.forward * speed;
+       
     }
 }

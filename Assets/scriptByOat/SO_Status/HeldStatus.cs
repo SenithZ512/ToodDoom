@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public class HeldStatus : MonoBehaviour,IDamgaeAble,IElement
+public class HeldStatus : MonoBehaviour,IElement
 {
     public SO_Status status;
    
@@ -18,19 +18,14 @@ public class HeldStatus : MonoBehaviour,IDamgaeAble,IElement
         _speed = status.speed;
         GameEvent.UpdatePLayerStatus?.Invoke();
     }
-    public void OnDamaged(float damageAmount)
-    {
-        Accept(new DamageVisitor(damageAmount));
-        Debug.Log($"HP: {_health}, Armor: {_armor}");
-       
-
-    }
+   
+  
     private void ExecuteDamage(float amount)
     {
         if (_armor > 0) { _armor -= amount; }
         else { _health -= amount; }
     }
-
+    
     public void Accept(IVisitor visitor)
     {
        visitor.Visit(this);

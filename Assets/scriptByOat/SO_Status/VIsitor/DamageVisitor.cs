@@ -9,9 +9,11 @@ public class DamageVisitor : IVisitor
     public DamageVisitor (float amount)
     {
         _dmgamount = amount;
+       
     }
     public void Visit(HeldStatus heldstatus)
     {
+       
 
         if (heldstatus._armor > 0)
         {
@@ -33,6 +35,7 @@ public class DamageVisitor : IVisitor
             
             heldstatus._health -= _dmgamount;
         }
+         if(heldstatus._health < 0) { heldstatus._health = 0; }
         GameEvent.UpdatePLayerStatus?.Invoke();
         Debug.Log("Healt " + heldstatus._health+"armor "+ heldstatus._armor);
     }

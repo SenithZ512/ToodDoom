@@ -24,7 +24,7 @@ public class TakeAmmo : MonoBehaviour, IAmmo
                         wasAmmoAdded = true;
                         if(equid.CurrentHolding == gunObject)
                         {
-                            gunScript.OnAmmoChanged?.Invoke();
+                            GameEvent.UpdateAmmo?.Invoke();
                         }
                     }
                 }

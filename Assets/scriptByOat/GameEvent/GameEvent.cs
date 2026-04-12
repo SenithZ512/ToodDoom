@@ -7,5 +7,6 @@ public static  class GameEvent
 {
     public static Action UpdatePLayerStatus;
     public static Action UpdateAmmo;
+    public static Action<float> CriticalActive;
 }
 

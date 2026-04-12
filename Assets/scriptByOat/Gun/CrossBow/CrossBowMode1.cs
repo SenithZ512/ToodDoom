@@ -7,7 +7,9 @@ public class CrossBowMode1 : MonoBehaviour,IGun
     [SerializeField] private string _modename = "Pistolmode1";
     public string ModeName => _modename;
 
-    public void shoot(Transform gunpoint, GunTypeSo Gundata)
+   
+
+    public void shoot(Transform gunpoint, GunTypeSo Gundata, float finalDamage, bool isCrit)
     {
         Objectpool.Instance.SpawnFromPool("PistolBullet", gunpoint.position, gunpoint.rotation);
     }

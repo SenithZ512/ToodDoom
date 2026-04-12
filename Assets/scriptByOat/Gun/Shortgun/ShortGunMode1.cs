@@ -10,29 +10,34 @@ public class ShortGunMode1 : MonoBehaviour ,IGun
 
     public string ModeName => _modename;
 
-    public void shoot(Transform gunpoint, GunTypeSo Gundata)
+   
+    public void shoot(Transform gunpoint, GunTypeSo Gundata, float finalDamage, bool isCrit)
     {
-        Gundata.FireRate =_config.Firerate;
+        Gundata.FireRate = _config.Firerate;
         int _pelletCount = _config.pelletCount;
         float _spreadAngle = _config.spreadAngle;
         for (int i = 0; i < _pelletCount; i++)
         {
-           
-           
+
+
             Quaternion randomRotation = Quaternion.Euler(
                 Random.Range(-_spreadAngle, _spreadAngle),
                 Random.Range(-_spreadAngle, _spreadAngle),
                 0
             );
 
-            
+
             Quaternion finalRotation = gunpoint.rotation * randomRotation;
 
-            
-            Objectpool.Instance.SpawnFromPool("PistolBullet", gunpoint.position, finalRotation);
+
+            GameObject bulletObj = Objectpool.Instance.SpawnFromPool("PistolBullet", gunpoint.position, finalRotation);
+            if (bulletObj.TryGetComponent<Bullet>(out Bullet bulletScript))
+            {
+               
+                bulletScript.Setup(finalDamage, isCrit);
+                bulletScript.OnobjectSpawn();
+            }
         }
 
-       
-    } 
-    
+    }
 }

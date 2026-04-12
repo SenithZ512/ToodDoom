@@ -8,9 +8,10 @@ public class ShortGUnmode2 : MonoBehaviour, IGun
     [SerializeField] private ShortGunConfig _config;
     public string ModeName => _modename;
 
-    public void shoot(Transform gunpoint, GunTypeSo Gundata)
+  
+    public void shoot(Transform gunpoint, GunTypeSo Gundata, float finalDamage, bool isCrit)
     {
-       
+
         Gundata.FireRate = _config.Firerate;
         int _pelletCount = _config.pelletCount;
         float _spreadAngle = _config.spreadAngle;

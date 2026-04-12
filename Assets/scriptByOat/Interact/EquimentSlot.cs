@@ -14,16 +14,22 @@ public class EquimentSlot : MonoBehaviour,IThrow
     [SerializeField] private UpdateAmmoUI ammoUI;
     private int currentindex;
     private int previousIndex;
+    public HeldStatus held;
+
+
+    public bool isCritHundredActive = false;
+    private void Start()
+    {
+        held = GetComponent<HeldStatus>();
+    }
     public void AddGun(GameObject newGun)
     {
         if (gunList.Count < 10) 
         {
             gunList.Add(newGun);
             Gun gunScript = newGun.GetComponent<Gun>();
-         
-            gunScript.OnAmmoChanged = () => {
-                UpdateUI(gunScript);
-            };
+
+            GameEvent.UpdateAmmo?.Invoke();
             if (HoldingPoint)
                 newGun.SetActive(false);
         }
@@ -42,8 +48,8 @@ public class EquimentSlot : MonoBehaviour,IThrow
                     previousIndex = currentindex;
                 }
                 OnHoldGun(i);
-                
-                if (CurrentHolding != null) UpdateUI(CurrentHolding.GetComponent<Gun>());
+               
+                GameEvent.UpdateAmmo?.Invoke();
                 break; 
             }
         }
@@ -54,28 +60,32 @@ public class EquimentSlot : MonoBehaviour,IThrow
             if (Input.GetKeyDown(KeyCode.G))
             {
                 OnThrow();
+                GameEvent.UpdateAmmo?.Invoke();
             }
             if (Input.GetMouseButton(0))
             {
+                
                 if (currentGun.AllAmmoleft <= 0 && currentGun.currentAmmo <= 0)
                 {
                     currentGun.currentAmmo = 0;
-                    currentGun.OnAmmoChanged?.Invoke();
-                  
+                    GameEvent.UpdateAmmo?.Invoke();
+
                     SwitchToNextAvailableGun();
                     return;
                 }
                 currentGun.GetComponent<Gun>().ExecuteFire();
-               
+                GameEvent.UpdateAmmo?.Invoke();
             }
             if (Input.GetButtonDown("Reload"))
             {
                 currentGun.GetComponent<Gun>().ReloadFuc();
+                GameEvent.UpdateAmmo?.Invoke();
                 
             }
             if (Input.GetButtonDown("Swamp"))
             {
                 SwapToPreviousGun();
+                GameEvent.UpdateAmmo?.Invoke();
             }
         }
        
@@ -94,6 +104,10 @@ public class EquimentSlot : MonoBehaviour,IThrow
             _gun.GetComponent<Rigidbody>().isKinematic = true;
             AddGun(_gun.gameObject);
         }
+        if(collision.gameObject.TryGetComponent<IEffectPickUp> (out IEffectPickUp effectPickUp))
+        {
+            effectPickUp.Onpickup(this);
+        }
     }
     public void SwapToPreviousGun()
     {
@@ -106,7 +120,7 @@ public class EquimentSlot : MonoBehaviour,IThrow
 
             previousIndex = tempIndex; 
 
-            if (CurrentHolding != null) UpdateUI(CurrentHolding.GetComponent<Gun>());
+           
         }
     }
     private void OnHoldGun(int index)
@@ -126,7 +140,7 @@ public class EquimentSlot : MonoBehaviour,IThrow
                    
                     CurrentHolding = gunList[index].gameObject;
                     currentindex = i;
-                    UpdateUI(gunList[i].GetComponent<Gun>());
+                  
                 }
                 else
                 {
@@ -181,11 +195,18 @@ public class EquimentSlot : MonoBehaviour,IThrow
         CurrentHolding = null;
         ammoUI.ClearHud();
     }
-    private void UpdateUI(Gun gun)
+    public void ActivateCritBuff(float duration)
     {
-        if (ammoUI != null)
-        {
-            ammoUI.UpdateText(gun.currentAmmo, gun.AllAmmoleft,gun.currentMode.ModeName);
-        }
+        StopAllCoroutines(); // ∂È“‡°Á∫´È”„ÀÈ√’‡´Áµ‡«≈“„À¡Ë
+        StartCoroutine(CritBuffRoutine(duration));
+    }
+
+    private IEnumerator CritBuffRoutine(float duration)
+    {
+        isCritHundredActive = true;
+        Debug.Log("CRIT BUFF ACTIVE!");
+        yield return new WaitForSeconds(duration);
+        isCritHundredActive = false;
+        Debug.Log("CRIT BUFF EXPIRED");
     }
 }
