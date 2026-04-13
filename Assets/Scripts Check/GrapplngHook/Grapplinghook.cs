@@ -15,9 +15,13 @@ public class Grappling : MonoBehaviour
     public float overshootYAxis = 3f;
 
     [Header("Swing")]
-    public float swingForce = 20f;        // แรงแกว่ง
-    public float airControl = 8f;         // ควบคุมทิศขณะแกว่ง
-    public bool enableSwing = true;       // true = เหวี่ยง, false = พุ่งตรง
+    public float swingForce = 20f;
+    public float airControl = 8f;
+    public bool enableSwing = true;       // true = แกว่ง, false = พุ่งตรง
+
+    [Header("Zip (Pull to Point)")]
+    public float zipSpeed = 30f;          // ความเร็วพุ่ง
+    public float zipStopDistance = 1.5f;  // หยุดเมื่อเข้าใกล้เป้าแค่นี้
 
     [Header("Cooldown")]
     public float grapplingCd = 0.3f;
@@ -28,8 +32,8 @@ public class Grappling : MonoBehaviour
 
     private Vector3 grapplePoint;
     private bool grappling;
+    private bool isZipping;
 
-    // Swing state
     private SpringJoint _joint;
 
     private void Start()
@@ -48,16 +52,17 @@ public class Grappling : MonoBehaviour
         if (grapplingCdTimer > 0)
             grapplingCdTimer -= Time.deltaTime;
 
-        // วาด rope
         if (grappling && lr != null && gunTip != null)
         {
             lr.SetPosition(0, gunTip.position);
             lr.SetPosition(1, grapplePoint);
         }
 
-        // Air control ขณะแกว่ง
         if (grappling && enableSwing)
             ApplySwingAirControl();
+
+        if (isZipping)
+            UpdateZip();
     }
 
     private void StartGrapple()
@@ -74,9 +79,7 @@ public class Grappling : MonoBehaviour
         if (enableSwing)
             StartSwing();
         else
-        {
-            Invoke(nameof(ExecuteGrapple), grappleDelayTime);
-        }
+            StartZip();
 
         if (lr != null)
         {
@@ -85,21 +88,33 @@ public class Grappling : MonoBehaviour
         }
     }
 
+    // ── Zip Mode ─────────────────────────────────────────────────
+    private void StartZip()
+    {
+        isZipping = true;
+        Vector3 direction = (grapplePoint - transform.position).normalized;
+        pm.horizontalVelocity = new Vector3(direction.x, 0f, direction.z) * zipSpeed;
+        pm.verticalVelocity = direction.y * zipSpeed;
+        pm.externalVelocity = Vector3.zero;
+    }
+
+    private void UpdateZip()
+    {
+        if (Vector3.Distance(transform.position, grapplePoint) <= zipStopDistance)
+            StopGrapple();
+    }
+
     // ── Swing Mode ───────────────────────────────────────────────
     void StartSwing()
     {
-        // ใช้ SpringJoint เพื่อจำลองเชือก physics-based
         Rigidbody rb = pm.GetComponent<Rigidbody>();
         if (rb == null)
             rb = pm.gameObject.AddComponent<Rigidbody>();
 
         rb.useGravity = true;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
-
-        // ถ่าย velocity จาก CharacterController ไป Rigidbody
         rb.velocity = pm.CurrentVelocity;
 
-        // ปิด CharacterController ชั่วคราว (ขัดแย้งกับ Rigidbody)
         pm.GetComponent<CharacterController>().enabled = false;
 
         _joint = pm.gameObject.AddComponent<SpringJoint>();
@@ -107,12 +122,8 @@ public class Grappling : MonoBehaviour
         _joint.connectedAnchor = grapplePoint;
 
         float dist = Vector3.Distance(pm.transform.position, grapplePoint);
-
-        // ความยาวเชือก = ระยะปัจจุบัน (แกว่งได้ไม่เกินระยะนี้)
         _joint.maxDistance = dist * 0.8f;
         _joint.minDistance = dist * 0.1f;
-
-        // ค่า spring ทำให้เชือกรู้สึก taut (ตึง)
         _joint.spring = 4.5f;
         _joint.damper = 7f;
         _joint.massScale = 4.5f;
@@ -123,59 +134,10 @@ public class Grappling : MonoBehaviour
         Rigidbody rb = pm.GetComponent<Rigidbody>();
         if (rb == null) return;
 
-        // ควบคุมทิศขณะแกว่งด้วย WASD
-        if (Input.GetKey(KeyCode.W))
-            rb.AddForce(cam.forward * airControl, ForceMode.Force);
-        if (Input.GetKey(KeyCode.S))
-            rb.AddForce(-cam.forward * airControl, ForceMode.Force);
-        if (Input.GetKey(KeyCode.A))
-            rb.AddForce(-cam.right * airControl, ForceMode.Force);
-        if (Input.GetKey(KeyCode.D))
-            rb.AddForce(cam.right * airControl, ForceMode.Force);
-    }
-
-    // ── Launch Mode (เดิม) ───────────────────────────────────────
-    private void ExecuteGrapple()
-    {
-        Vector3 lowestPoint = new Vector3(
-            transform.position.x,
-            transform.position.y - 1f,
-            transform.position.z
-        );
-
-        float grapplePointRelativeYPos = grapplePoint.y - lowestPoint.y;
-        float highestPointOnArc = grapplePointRelativeYPos + overshootYAxis;
-        if (grapplePointRelativeYPos < 0) highestPointOnArc = overshootYAxis;
-
-        JumpToPosition(grapplePoint, highestPointOnArc);
-        Invoke(nameof(StopGrapple), 1f);
-    }
-
-    private void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
-    {
-        Vector3 velocity = CalculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
-        pm.horizontalVelocity = new Vector3(velocity.x, 0f, velocity.z);
-        pm.verticalVelocity = velocity.y;
-        pm.externalVelocity = Vector3.zero;
-    }
-
-    private Vector3 CalculateJumpVelocity(Vector3 startPoint, Vector3 endPoint, float trajectoryHeight)
-    {
-        float gravity = Mathf.Abs(pm.gravity != 0 ? pm.gravity : -25f);
-        float displacementY = endPoint.y - startPoint.y;
-        Vector3 displacementXZ = new Vector3(
-            endPoint.x - startPoint.x, 0f,
-            endPoint.z - startPoint.z
-        );
-
-        float timeUp = Mathf.Sqrt(2 * trajectoryHeight / gravity);
-        float timeDown = Mathf.Sqrt(2 * Mathf.Abs(trajectoryHeight - displacementY) / gravity);
-        float totalTime = timeUp + timeDown;
-
-        Vector3 velocityY = Vector3.up * Mathf.Sqrt(2 * gravity * trajectoryHeight);
-        Vector3 velocityXZ = displacementXZ / totalTime;
-
-        return velocityXZ + velocityY;
+        if (Input.GetKey(KeyCode.W)) rb.AddForce(cam.forward * airControl, ForceMode.Force);
+        if (Input.GetKey(KeyCode.S)) rb.AddForce(-cam.forward * airControl, ForceMode.Force);
+        if (Input.GetKey(KeyCode.A)) rb.AddForce(-cam.right * airControl, ForceMode.Force);
+        if (Input.GetKey(KeyCode.D)) rb.AddForce(cam.right * airControl, ForceMode.Force);
     }
 
     // ── Stop ─────────────────────────────────────────────────────
@@ -184,16 +146,11 @@ public class Grappling : MonoBehaviour
         if (!grappling) return;
 
         grappling = false;
+        isZipping = false;
         grapplingCdTimer = grapplingCd;
 
-        // ลบ SpringJoint
-        if (_joint != null)
-        {
-            Destroy(_joint);
-            _joint = null;
-        }
+        if (_joint != null) { Destroy(_joint); _joint = null; }
 
-        // คืน velocity จาก Rigidbody กลับไป PlayerController
         Rigidbody rb = pm.GetComponent<Rigidbody>();
         if (rb != null)
         {
@@ -202,14 +159,9 @@ public class Grappling : MonoBehaviour
             Destroy(rb);
         }
 
-        // เปิด CharacterController กลับ
         pm.GetComponent<CharacterController>().enabled = true;
 
-        if (lr != null)
-        {
-            lr.enabled = false;
-            lr.positionCount = 0;
-        }
+        if (lr != null) { lr.enabled = false; lr.positionCount = 0; }
     }
 
     public bool IsGrappling() => grappling;
