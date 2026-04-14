@@ -13,14 +13,20 @@ public class PistolFistMode : MonoBehaviour, IGun
     public void shoot(Transform gunpoint, GunTypeSo Gundata, float finalDamage, bool isCrit)
     {
 
-        Gundata.FireRate = 0.6f;
+       
         GameObject bulletObj = Objectpool.Instance.SpawnFromPool("PistolBullet", gunpoint.position, gunpoint.rotation);
+       
 
         if (bulletObj.TryGetComponent<Bullet>(out Bullet bulletScript))
         {
-            // ส่งดาเมจที่คำนวณคริแล้วจากปืนไปให้กระสุนโดยตรง
-            bulletScript.Setup(finalDamage, isCrit);
-            bulletScript.OnobjectSpawn();
+           
+           
+                bulletScript.Setup(finalDamage, isCrit);
+
+
+                bulletScript.OnobjectSpawn();
+            
+            
         }
     }
 }

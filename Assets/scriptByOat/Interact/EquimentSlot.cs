@@ -94,8 +94,8 @@ public class EquimentSlot : MonoBehaviour,IThrow
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.TryGetComponent<Gun>(out Gun _gun))
-        {   
-            
+        {
+            if (_gun.transform.parent != null) return;
             _gun.gameObject.transform.position = HoldingPoint.transform.position;
             _gun.gameObject.transform.localRotation = HoldingPoint.transform.localRotation;
             _gun.gameObject.transform.SetParent(HoldingPoint.transform);

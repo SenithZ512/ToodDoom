@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-[RequireComponent(typeof(Rigidbody))]
+
 public class Gun : MonoBehaviour, IThrow
 {
     public GunTypeSo guntype;
@@ -77,13 +77,29 @@ public class Gun : MonoBehaviour, IThrow
             return;
         }
         float damageToSend = guntype.Damage;
-        bool critState = false; EquimentSlot owner = GetComponentInParent<EquimentSlot>();
-        if (owner != null && owner.isCritHundredActive)
+        bool critState = false;
+       
+        GameObject ownerObj = transform.root.gameObject;
+
+        
+        if (ownerObj.CompareTag("Player"))
         {
-            critState = true;
-           
-            damageToSend = guntype.Damage * 3f;
+         
+            EquimentSlot playerSlot = ownerObj.GetComponent<EquimentSlot>();
+            if (playerSlot != null && playerSlot.isCritHundredActive)
+            {
+                critState = true;
+                damageToSend = guntype.Damage * 3f;
+                Debug.Log("player shoot");
+            }
         }
+        else
+        {
+            Debug.Log("enemy shoot");
+            critState = false;
+            damageToSend = guntype.Damage;
+        }
+
         currentMode.shoot(GunPoint, guntype, damageToSend, critState);
         FirerateCount = Time.time + guntype.FireRate;
         currentAmmo--;
@@ -119,6 +135,11 @@ public class Gun : MonoBehaviour, IThrow
     private IEnumerator Throwed()
     {
         gameObject.layer = 7;
+        if(gameObject.GetComponent<Rigidbody>() == null )
+        {
+            gameObject.AddComponent<Rigidbody>();
+        }
+       
         GetComponent<Collider>().enabled = true;
         GetComponent<Rigidbody>().isKinematic = false;
         yield return new WaitForSeconds(2f);

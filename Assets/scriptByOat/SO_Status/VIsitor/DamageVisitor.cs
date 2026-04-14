@@ -37,7 +37,7 @@ public class DamageVisitor : IVisitor
         }
          if(heldstatus._health < 0) { heldstatus._health = 0; }
         GameEvent.UpdatePLayerStatus?.Invoke();
-        Debug.Log("Healt " + heldstatus._health+"armor "+ heldstatus._armor);
+        //Debug.Log("Healt " + heldstatus._health+"armor "+ heldstatus._armor);
     }
    
 }

@@ -13,7 +13,7 @@ public class PistolSeconMode : MonoBehaviour, IGun
 
     public void shoot(Transform gunpoint, GunTypeSo Gundata, float finalDamage, bool isCrit)
     {
-        Gundata.FireRate = 0.07f;
+       
         Objectpool.Instance.SpawnFromPool("PistolBullet", gunpoint.position, gunpoint.rotation);
     }
 }

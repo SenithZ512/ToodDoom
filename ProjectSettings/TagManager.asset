@@ -17,9 +17,9 @@ TagManager:
   - enemyLayer
   - Wall
   - Ammo
-  - 
-  - 
-  - 
+  - Player
+  - Power Up
+  - Gun
   - 
   - 
   - 

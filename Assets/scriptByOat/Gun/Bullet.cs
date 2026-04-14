@@ -13,7 +13,8 @@ public class Bullet : MonoBehaviour, IpoolObject
     private Rigidbody rb;
 
 
-    private bool _isCrit; public void Setup(float dmg, bool crit)
+    private bool _isCrit;
+    public void Setup(float dmg, bool crit)
     {
         damage = dmg;
         _isCrit = crit;
@@ -21,7 +22,8 @@ public class Bullet : MonoBehaviour, IpoolObject
 
    
    
-    private void OnCollisionEnter(Collision collision)
+   
+    private void OnTriggerEnter(Collider collision)
     {
         if (gunTypeSo.GunTypename == "RocketLauncher")
         {
@@ -29,11 +31,11 @@ public class Bullet : MonoBehaviour, IpoolObject
             gameObject.SetActive(false);
             return;
         }
-      /*  float finalDamage = damage;
-        if (gameObject.CompareTag("Bullet") && Critmanager.PlayerCritActive)
-        {
-            finalDamage = damage +damage * 2f; 
-        }*/
+        /*  float finalDamage = damage;
+          if (gameObject.CompareTag("Bullet") && Critmanager.PlayerCritActive)
+          {
+              finalDamage = damage +damage * 2f; 
+          }*/
 
         if (collision.gameObject.TryGetComponent<IElement>(out IElement _damage))
         {
@@ -49,6 +51,12 @@ public class Bullet : MonoBehaviour, IpoolObject
     {
         if (rb == null) rb = GetComponent<Rigidbody>();
         rb.velocity = transform.forward * speed;
+        StartCoroutine(dissaper());
        
+    }
+    IEnumerator dissaper()
+    {
+        yield return new WaitForSeconds(10f);
+        gameObject.SetActive(false);
     }
 }

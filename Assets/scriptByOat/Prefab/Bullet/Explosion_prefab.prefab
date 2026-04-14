@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7157755230931127023}
   - component: {fileID: 3401881552964426587}
   - component: {fileID: 6113674421335999864}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,10 +116,10 @@ GameObject:
   - component: {fileID: 136532236952155073}
   - component: {fileID: 3934023860279848512}
   - component: {fileID: 2329047013936214555}
-  - component: {fileID: 7431246746398654186}
-  m_Layer: 0
+  - component: {fileID: 2436759749400149623}
+  m_Layer: 8
   m_Name: Explosion_prefab
-  m_TagString: Untagged
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -153,9 +153,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimeToDissaear: 2
-  explosionRadius: 29.5
-  explosionDamage: 150
-  explosionForce: 300
+  explosionRadius: 15
+  explosionDamage: 100
+  explosionForce: 500
 --- !u!54 &2329047013936214555
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -183,8 +183,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &7431246746398654186
-BoxCollider:
+--- !u!135 &2436759749400149623
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -202,5 +202,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Radius: 1.5
   m_Center: {x: 0, y: 0, z: 0}
