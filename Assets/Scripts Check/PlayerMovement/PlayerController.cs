@@ -1,13 +1,5 @@
 ﻿using UnityEngine;
 
-<<<<<<< HEAD:Assets/Scripts Check/PlayerController.cs
-=======
-/// <summary>
-/// First Person Player Controller
-/// Features: Double Jump, Slide, Sprint, FOV Transition, Velocity Preservation
-/// ต้องการ: CharacterController component บน GameObject เดียวกัน
-/// </summary>
->>>>>>> Oatlol:Assets/Scripts Check/PlayerMovement/PlayerController.cs
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
@@ -29,37 +21,22 @@ public class PlayerController : MonoBehaviour
     public float slideHeightReduction = 0.5f;
     public float slideFriction = 1.5f;
     public float slideSpeedThreshold = 3f;
-<<<<<<< HEAD:Assets/Scripts Check/PlayerController.cs
 
 
 
-=======
->>>>>>> Oatlol:Assets/Scripts Check/PlayerMovement/PlayerController.cs
 
     [Header("References")]
     public Transform cameraHolder;
 
-<<<<<<< HEAD:Assets/Scripts Check/PlayerController.cs
 
     [Header("Sprint Settings")]
     public float sprintSpeed = 40f;          // ความเร็วตอนวิ่ง
     public float sprintFOV = 90f;            // FOV ตอนวิ่ง
     public float normalFOV = 60f;            // FOV ปกติ
     public float fovTransitionSpeed = 8f;    // ความเร็วเปลี่ยน FOV
-=======
-    [Header("Sprint Settings")]
-    public float sprintSpeed = 40f;
-    public float sprintFOV = 90f;
-    public float normalFOV = 60f;
-    public float fovTransitionSpeed = 8f;
->>>>>>> Oatlol:Assets/Scripts Check/PlayerMovement/PlayerController.cs
 
     private CharacterController _cc;
 
-<<<<<<< HEAD:Assets/Scripts Check/PlayerController.cs
-=======
-    // ── Velocity ─────────────────────────────────────────────────
->>>>>>> Oatlol:Assets/Scripts Check/PlayerMovement/PlayerController.cs
     [HideInInspector] public Vector3 horizontalVelocity;
     [HideInInspector] public float verticalVelocity;
     [HideInInspector] public Vector3 externalVelocity;
@@ -82,29 +59,16 @@ public class PlayerController : MonoBehaviour
     private Vector2 _moveInput;
     private bool _slidePressed;
 
-<<<<<<< HEAD:Assets/Scripts Check/PlayerController.cs
-=======
-    // ── Properties ──────────────────────────────────────────────
->>>>>>> Oatlol:Assets/Scripts Check/PlayerMovement/PlayerController.cs
     public bool IsGrounded => _isGrounded;
     public bool IsSliding => _isSliding;
     public Vector3 CurrentVelocity => horizontalVelocity + Vector3.up * verticalVelocity + externalVelocity;
 
-<<<<<<< HEAD:Assets/Scripts Check/PlayerController.cs
 
-=======
->>>>>>> Oatlol:Assets/Scripts Check/PlayerMovement/PlayerController.cs
     private bool _isSprinting;
     private Camera _cam;
 
     void Awake()
     {
-<<<<<<< HEAD:Assets/Scripts Check/PlayerController.cs
-<<<<<<< Updated upstream
-=======
-
-
->>>>>>> Oatlol:Assets/Scripts Check/PlayerMovement/PlayerController.cs
       
         
             _cc = GetComponent<CharacterController>();
@@ -115,31 +79,6 @@ public class PlayerController : MonoBehaviour
             if (cameraHolder != null)
                 _defaultCameraY = cameraHolder.localPosition.y;
         
-<<<<<<< HEAD:Assets/Scripts Check/PlayerController.cs
-=======
-=======
->>>>>>> Oatlol:Assets/Scripts Check/PlayerMovement/PlayerController.cs
-
-
-        _cc = GetComponent<CharacterController>();
-        _defaultHeight = _cc.height;
-        _defaultCenter = _cc.center;
-<<<<<<< HEAD:Assets/Scripts Check/PlayerController.cs
-        _cam = Camera.main;                  // ← เพิ่มบรรทัดนี้
-=======
-        _cam = Camera.main;
->>>>>>> Oatlol:Assets/Scripts Check/PlayerMovement/PlayerController.cs
-
-        if (cameraHolder != null)
-            _defaultCameraY = cameraHolder.localPosition.y;
-
-<<<<<<< HEAD:Assets/Scripts Check/PlayerController.cs
->>>>>>> Stashed changes
-=======
-
-
-
->>>>>>> Oatlol:Assets/Scripts Check/PlayerMovement/PlayerController.cs
     }
 
     void Update()
@@ -166,10 +105,7 @@ public class PlayerController : MonoBehaviour
 
         _slidePressed = Input.GetKeyDown(KeyCode.LeftControl);
 
-<<<<<<< HEAD:Assets/Scripts Check/PlayerController.cs
         // ✅ Sprint
-=======
->>>>>>> Oatlol:Assets/Scripts Check/PlayerMovement/PlayerController.cs
         _isSprinting = Input.GetKey(KeyCode.LeftShift) && _isGrounded && _moveInput.y > 0;
     }
     #endregion
@@ -184,10 +120,6 @@ public class PlayerController : MonoBehaviour
         {
             _coyoteTimer = _coyoteTime;
             _hasDoubleJump = true;
-<<<<<<< HEAD:Assets/Scripts Check/PlayerController.cs
-=======
-
->>>>>>> Oatlol:Assets/Scripts Check/PlayerMovement/PlayerController.cs
             if (!_wasGrounded)
                 OnLanded();
         }
@@ -254,12 +186,8 @@ public class PlayerController : MonoBehaviour
             if (speed >= slideSpeedThreshold)
                 StartSlide();
             else
-<<<<<<< HEAD:Assets/Scripts Check/PlayerController.cs
                 // slide แม้ความเร็วน้อย (optional)
                 StartSlide(); // ← ลบ threshold ออกชั่วคราวเพื่อทดสอบ
-=======
-                StartSlide();
->>>>>>> Oatlol:Assets/Scripts Check/PlayerMovement/PlayerController.cs
         }
 
         if (_isSliding)
@@ -283,10 +211,7 @@ public class PlayerController : MonoBehaviour
         if (_slideDirection == Vector3.zero)
             _slideDirection = transform.forward;
 
-<<<<<<< HEAD:Assets/Scripts Check/PlayerController.cs
         // ✅ เพิ่มจาก 0.3f เป็น 1.5f = พุ่งแรงขึ้นมาก
-=======
->>>>>>> Oatlol:Assets/Scripts Check/PlayerMovement/PlayerController.cs
         horizontalVelocity += _slideDirection * slideForce * 1.5f;
 
         float newHeight = _defaultHeight * slideHeightReduction;
@@ -328,7 +253,6 @@ public class PlayerController : MonoBehaviour
     void ApplyMovement()
     {
         Vector3 inputDir = GetInputDirection();
-        float currentSpeed = _isSprinting ? sprintSpeed : walkSpeed;
 
         // ✅ เลือก speed ตาม sprint
         float currentSpeed = _isSprinting ? sprintSpeed : walkSpeed;
@@ -366,10 +290,7 @@ public class PlayerController : MonoBehaviour
             );
         }
 
-<<<<<<< HEAD:Assets/Scripts Check/PlayerController.cs
         // ✅ FOV transition
-=======
->>>>>>> Oatlol:Assets/Scripts Check/PlayerMovement/PlayerController.cs
         if (_cam != null)
         {
             float targetFOV = _isSprinting ? sprintFOV : normalFOV;
@@ -410,10 +331,6 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Public API
-<<<<<<< HEAD:Assets/Scripts Check/PlayerController.cs
-=======
-    /// <summary>เพิ่ม velocity จากภายนอก เช่น Grappling Hook</summary>
->>>>>>> Oatlol:Assets/Scripts Check/PlayerMovement/PlayerController.cs
     public void AddExternalVelocity(Vector3 velocity)
     {
         externalVelocity += velocity;

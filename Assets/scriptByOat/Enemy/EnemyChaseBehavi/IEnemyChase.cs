@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IAttackBehaviour 
+public interface IEnemyChase 
 {
-    void Attack(EnemyStateManager state);
+    void Onchase(EnemyStateManager state);
+
 }

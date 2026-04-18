@@ -4,17 +4,21 @@ using UnityEngine;
 
 public class ES_Attack : EnemyBaseState
 {
-   private IAttackBehaviour _attackBehaviour;
+    private IAttackBehaviour[] _attackBehaviour;
     public override void OnEnterState(EnemyStateManager state)
     {
       
-        _attackBehaviour = state.gameObject.GetComponent<IAttackBehaviour>();
+        _attackBehaviour = state.gameObject.GetComponents<IAttackBehaviour>();
     
     }
 
     public override void OnExitState(EnemyStateManager state)
     {
-        
+        if (_attackBehaviour != null)
+        {
+            state.rb.isKinematic = false;
+        }
+       
     }
 
     public override void OnUpdateState(EnemyStateManager state)
@@ -35,7 +39,13 @@ public class ES_Attack : EnemyBaseState
             state.SwitchState(state._Chase);
             return;
         }
-        _attackBehaviour.Attack();
-       
+        if (_attackBehaviour != null)
+        {
+            foreach (var behaviour in _attackBehaviour)
+            {
+                behaviour.Attack(state);
+            }
+        }
+
     }
 }
