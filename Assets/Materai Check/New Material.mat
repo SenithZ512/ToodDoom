@@ -80,6 +80,7 @@ Material:
     m_Colors:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     - _Color: {r: 1, g: 0.07075471, b: 0.07075471, a: 1}
 =======
@@ -89,6 +90,9 @@ Material:
 =======
     - _Color: {r: 1, g: 0, b: 0, a: 1}
 >>>>>>> Oatlol
+=======
+    - _Color: {r: 1, g: 0.07075471, b: 0.07075471, a: 1}
+>>>>>>> parent of 4055714 (UpdateCheck#4 [Add Door silde VFX])
 =======
     - _Color: {r: 1, g: 0.07075471, b: 0.07075471, a: 1}
 >>>>>>> parent of 4055714 (UpdateCheck#4 [Add Door silde VFX])
