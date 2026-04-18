@@ -4,15 +4,5 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-<<<<<<< Updated upstream
   m_Scenes: []
-=======
-  m_Scenes:
-  - enabled: 1
-    path: Assets/Scenes/GameOver.unity
-    guid: f39169590c93a724ba172ad983d2fb4a
-  - enabled: 1
-    path: Assets/Scenes/MapLayout.unity
-    guid: 89f19ee7a1eedec4a8ed6e031780c355
->>>>>>> Stashed changes
   m_configObjects: {}
