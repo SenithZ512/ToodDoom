@@ -78,8 +78,11 @@
             },
             {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
                 "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
@@ -118,7 +121,10 @@
             },
             {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 >>>>>>> Oatlol
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
                 "type": "UnityEngine.ProBuilder.UnwrapParameters, Unity.ProBuilder, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
@@ -167,8 +173,11 @@
             },
             {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
                 "type": "UnityEngine.ProBuilder.SelectMode, Unity.ProBuilder, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
@@ -177,7 +186,10 @@
             },
             {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 >>>>>>> Oatlol
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
                 "type": "UnityEngine.ProBuilder.SelectionModifierBehavior, Unity.ProBuilder, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
@@ -189,12 +201,15 @@
                 "key": "editor.dragSelectRectMode",
                 "value": "{\"m_Value\":0}"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 =======
 >>>>>>> Oatlol
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
             },
@@ -238,12 +253,15 @@
                 "key": "ShapeBuilder.Cone",
                 "value": "{}"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 >>>>>>> Stashed changes
 =======
 >>>>>>> Oatlol
 =======
 >>>>>>> parent of 4055714 (UpdateCheck#4 [Add Door silde VFX])
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
             }
