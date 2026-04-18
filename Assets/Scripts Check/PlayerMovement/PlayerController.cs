@@ -74,6 +74,20 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+
+
+      
+        
+            _cc = GetComponent<CharacterController>();
+            _defaultHeight = _cc.height;
+            _defaultCenter = _cc.center;
+            _cam = Camera.main;                  // ← เพิ่มบรรทัดนี้
+
+            if (cameraHolder != null)
+                _defaultCameraY = cameraHolder.localPosition.y;
+        
+
+
         _cc = GetComponent<CharacterController>();
         _defaultHeight = _cc.height;
         _defaultCenter = _cc.center;
@@ -81,6 +95,10 @@ public class PlayerController : MonoBehaviour
 
         if (cameraHolder != null)
             _defaultCameraY = cameraHolder.localPosition.y;
+
+
+
+
     }
 
     void Update()
