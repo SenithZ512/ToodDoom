@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea06193a4b8e13c4c83adacdb55ac934, type: 3}
+  m_Name: GTSO_SW
+  m_EditorClassIdentifier: 
+  GunTypename: Sword
+  AmmoType: {fileID: 11400000, guid: 5235ba6a964b7f24d84325774395ae6b, type: 2}
+  Damage: 1
+  FireRate: 0.1
+  MaxCapacity: 60
+  MaxAmmoCanTake: 300
+  ReloadTime: 0

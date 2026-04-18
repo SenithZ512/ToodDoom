@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - obstacleLayer
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -15,10 +16,10 @@ TagManager:
   - UI
   - enemyLayer
   - Wall
-  - 
-  - 
-  - 
-  - 
+  - Ammo
+  - Player
+  - Power Up
+  - Gun
   - 
   - 
   - 
