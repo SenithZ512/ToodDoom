@@ -8277,7 +8277,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7178611411053795795, guid: fd4b1af7c4ec019408526f8616eaf92e, type: 3}
       propertyPath: zipSpeed
+<<<<<<< Updated upstream
       value: 30
+=======
+      value: 50
+>>>>>>> Stashed changes
       objectReference: {fileID: 0}
     - target: {fileID: 7178611411053795795, guid: fd4b1af7c4ec019408526f8616eaf92e, type: 3}
       propertyPath: airControl
@@ -8285,7 +8289,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7178611411053795795, guid: fd4b1af7c4ec019408526f8616eaf92e, type: 3}
       propertyPath: swingForce
-      value: 40
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7178611411053795795, guid: fd4b1af7c4ec019408526f8616eaf92e, type: 3}
       propertyPath: overshootYAxis
