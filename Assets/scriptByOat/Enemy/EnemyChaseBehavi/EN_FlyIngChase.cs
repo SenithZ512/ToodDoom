@@ -1,24 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class FlyingIdle : MonoBehaviour, IEnemyIdleBehave
+public class EN_FlyIngChase : MonoBehaviour, IEnemyChase
 {
+    public float moveSpeed = 5f;
     public float TargetHeight = 10f;
     public float hoverForce = 15f;
     Ray ray;
     RaycastHit hit;
   
-  
-    public void OnIdle(EnemyStateManager state)
+    public void Onchase(EnemyStateManager state)
     {
-        state.agent.enabled = true;
-        if (state.agent.enabled)
+      
+        state.agent.enabled = false;
+        Vector3 playerPos = new Vector3(state.player.position.x, transform.position.y, state.player.position.z);
+        Vector3 moveDirection = (playerPos - transform.position).normalized;
+        float distanceToPlayer = Vector3.Distance(transform.position, playerPos);
+        if (distanceToPlayer > 0.5f)
         {
-            state.agent.enabled = false;
-            state.rb.velocity = Vector3.zero; 
-            state.rb.angularVelocity = Vector3.zero; 
+            transform.LookAt(playerPos);
+            
+            state.rb.velocity = new Vector3(moveDirection.x * moveSpeed, state.rb.velocity.y, moveDirection.z * moveSpeed);
+        }
+        else
+        {
+            
+            state.rb.velocity = new Vector3(0, state.rb.velocity.y, 0);
         }
 
         ray = new Ray(transform.position, -transform.up);
@@ -39,14 +47,7 @@ public class FlyingIdle : MonoBehaviour, IEnemyIdleBehave
             {
 
                 state.rb.AddForce(Vector3.down * hoverForce * 0.5f, ForceMode.Acceleration);
-               
             }
-          
         }
-        Vector3 horizontalVel = state.rb.velocity;
-        horizontalVel.x = Mathf.Lerp(horizontalVel.x, 0, Time.deltaTime * 5f);
-        horizontalVel.z = Mathf.Lerp(horizontalVel.z, 0, Time.deltaTime * 5f);
-        state.rb.velocity = new Vector3(horizontalVel.x, state.rb.velocity.y, horizontalVel.z);
-        Debug.DrawRay(ray.origin, ray.direction * TargetHeight, Color.red);
     }
 }

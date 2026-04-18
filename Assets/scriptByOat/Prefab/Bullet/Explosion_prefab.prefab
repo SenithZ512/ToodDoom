@@ -158,7 +158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TimeToDissaear: 2
   explosionRadius: 15
-  explosionDamage: 100
+  explosionDamage: 10
   explosionForce: 500
 --- !u!54 &2329047013936214555
 Rigidbody:
