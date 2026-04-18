@@ -13,7 +13,8 @@ public class En_RangeAttack : MonoBehaviour, IAttackBehaviour
         aim = GetComponentInChildren<AimatPlayer>();
         
     }
-    public void Attack()
+  
+    public void Attack(EnemyStateManager state)
     {
         aim.Aim();
         _gun.ExecuteFire();

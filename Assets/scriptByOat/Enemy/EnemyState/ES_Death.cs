@@ -8,7 +8,9 @@ public class ES_Death : EnemyBaseState
     {
        state.rb.isKinematic = false;
        state.agent.enabled = false;
-      state.StartCoroutine(dissaper(state));
+      
+       
+        state.StartCoroutine(dissaper(state));
     }
 
     public override void OnExitState(EnemyStateManager state)

@@ -76,13 +76,13 @@ public class EquimentSlot : MonoBehaviour,IThrow
                 currentGun.GetComponent<Gun>().ExecuteFire();
                 GameEvent.UpdateAmmo?.Invoke();
             }
-            if (Input.GetButtonDown("Reload"))
+            if (Input.GetKeyDown(KeyCode.R))
             {
                 currentGun.GetComponent<Gun>().ReloadFuc();
                 GameEvent.UpdateAmmo?.Invoke();
                 
             }
-            if (Input.GetButtonDown("Swamp"))
+            if (Input.GetKeyDown(KeyCode.Q))
             {
                 SwapToPreviousGun();
                 GameEvent.UpdateAmmo?.Invoke();

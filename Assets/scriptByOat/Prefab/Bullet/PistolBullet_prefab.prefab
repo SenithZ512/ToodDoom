@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunTypeSo: {fileID: 11400000, guid: 4c4b52b943b137848ae2d17e6e1e49a3, type: 2}
-  speed: 50
+  speed: 30
   damage: 0
   Firepoint: {fileID: 0}
 --- !u!135 &6291963863005860166

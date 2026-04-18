@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 public class EnemyStateManager : MonoBehaviour
 {
+    [SerializeField] private string currentStateName;
     public EnemyBaseState currentState;
     public ES_Idle _Idle = new ES_Idle();
     public ES_Chase _Chase = new ES_Chase();
@@ -34,12 +35,14 @@ public class EnemyStateManager : MonoBehaviour
     private void Update()
     {
         currentState.OnUpdateState(this);
+      
     }
     public void SwitchState(EnemyBaseState state)
     {
         currentState.OnExitState(this);
         currentState = state;
         state.OnEnterState(this);
+        currentStateName = currentState.GetType().Name;
         Debug.Log("in state"+ currentState);
     }
     private void OnDrawGizmos()

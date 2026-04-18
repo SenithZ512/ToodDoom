@@ -8180,7 +8180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7178611411053795795, guid: fd4b1af7c4ec019408526f8616eaf92e, type: 3}
       propertyPath: zipSpeed
-      value: 30
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 7178611411053795795, guid: fd4b1af7c4ec019408526f8616eaf92e, type: 3}
       propertyPath: airControl
@@ -10735,7 +10735,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2650671374982672727, guid: bc7bc367829c95e438c100d353250d0d, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2650671374982672727, guid: bc7bc367829c95e438c100d353250d0d, type: 3}
       propertyPath: startTime
